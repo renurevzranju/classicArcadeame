@@ -1,0 +1,30 @@
+body {
+    text-align: center;
+}
+
+.menu {
+	width: 900px;
+	height: 60px;
+	margin: 0 auto;
+	padding-top: 30px;
+	text-align: left;
+	font-size: 50px;
+}
+
+.numHearts,
+.numKeys,
+.gotGems {
+	padding-left: 10px
+}
+
+.level {
+	float: right;
+	text-align: right;
+	width: 25%;
+	letter-spacing: -5px;
+}
+
+.items {
+	float: left;
+	width: 20%;
+}
