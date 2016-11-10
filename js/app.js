@@ -85,6 +85,7 @@ Player.prototype.reset = function() {
         this.x = 202;
         this.y = 415;
         if (this.lives === 1) {
+            alert(" !!!!!!!!!!!!!!!GAME OVER!!!!!!!!!!!!!!! \n Points Earned : " + player.points);
             this. points = 0;
             this. lives = 5;
         }else {
