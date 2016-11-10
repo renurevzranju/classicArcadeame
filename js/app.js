@@ -85,7 +85,7 @@ Player.prototype.reset = function() {
         this.y = 415;
 };
 
-/**--------------------DISPLAYING GEMS AND OTHER ITEMS---------------------------**/
+/**--------------------DISPLAYING COLLECTIBLE ITEMS---------------------------**/
 var Items = function() {
     var img = [
         'images/Gem-Blue.png',
@@ -97,7 +97,7 @@ var Items = function() {
 
     this.points = Math.floor(Math.random() *5);
     this.sprite = img[this.points];
-    this.multiplier = 5 * (this.points + 1);
+    this.multiplier = 10 * (this.points + 1);
 
     this.x = 0 + (101 * Math.floor(Math.random() * 5));
     this.y = 63 + (83 * Math.floor(Math.random() * 3));
@@ -132,7 +132,10 @@ var collisionDetection = function(anEnemy) {
 };
 
 var ItemCollision = function() {
-    if (player.y == items.y && player.x == items.x) {
+    if (player.y + 131 >= items.y + 90
+        && player.x + 25 <= items.x + 88
+        && player.y + 73 <= items.y + 135
+        && player.x + 76 >= items.x + 11) {
         player.points += items.multiplier;
         items = null;
     }

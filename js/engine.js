@@ -162,6 +162,10 @@ var Engine = (function(global) {
         });
 
         player.render();
+
+        if (items) {
+            items.update();
+        }
     }
 
     /* This function does nothing but it could have been a good place to
