@@ -80,6 +80,9 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
+        if (items) {
+            items.update();
+        }
     }
 
     /* This is called by the update function and loops through all of the
@@ -162,10 +165,6 @@ var Engine = (function(global) {
         });
 
         player.render();
-
-        if (items) {
-            items.update();
-        }
     }
 
     /* This function does nothing but it could have been a good place to

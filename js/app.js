@@ -138,6 +138,7 @@ var ItemCollision = function() {
         && player.x + 76 >= items.x + 11) {
         player.points += items.multiplier;
         items = null;
+        items = new Items();
     }
 };
 
