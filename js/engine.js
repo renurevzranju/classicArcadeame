@@ -109,6 +109,7 @@ var Engine = (function(global) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         var rowImages = [
                 'images/water-block.png',   // Top row is water
                 'images/stone-block.png',   // Row 1 of 3 of stone
@@ -139,12 +140,12 @@ var Engine = (function(global) {
         }
 
         /** Points **/
-        ctx.fillStyle = "rgb(250, 250, 250)";
-        ctx.font = "25px Sans-serif";
+        ctx.fillStyle = "rgb(0, 0, 0)";
+        ctx.font = "25px Kaushan Script";
         ctx.textAlign = "left";
         ctx.textBaseline = "top";
-        ctx.fillText("Points Earned: " + player.points, 32, 64);
-
+        ctx.fillText("Points Earned: " + player.points, 0, 10);
+        ctx.fillText("Lives: " + player.lives, 404, 10);
         renderEntities();
     }
 

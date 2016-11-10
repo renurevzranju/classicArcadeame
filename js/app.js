@@ -38,9 +38,25 @@ var Player = function(x, y, speed) {
     this.speed = speed;
     this.sprite = 'images/char-horn-girl.png';
     this.points = 0;
+    this.lives = 5;
 };
 
 Player.prototype.update = function() {
+    /**check if player runs into left, bottom, or right canvas walls
+    prevent player from moving beyond canvas wall boundaries**/
+    if (player.y > 383 ) {
+        this.y = 383;
+    }
+    if (player.x > 402.5) {
+        this.x = 402.5;
+    }
+    if (player.x < 2.5) {
+        this.x = 2.5;
+    }
+};
+
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     /*If player has reach the water, reset his location to the origin and 
     *increment runs completed counter by one
     */
@@ -48,41 +64,32 @@ Player.prototype.update = function() {
         this.points += 1;
         this.y = 404;
     };
-    /**check if player runs into left, bottom, or right canvas walls
-    prevent player from moving beyond canvas wall boundaries**/
-    if (player.y > 383 ) {
-        player.y = 383;
-    }
-    if (player.x > 402.5) {
-        player.x = 402.5;
-    }
-    if (player.x < 2.5) {
-        player.x = 2.5;
-    }
-};
-
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 Player.prototype.handleInput = function(keyPress) {
     if (keyPress == 'left') {
-        player.x -= player.speed;
+        this.x -= this.speed;
     }
     if (keyPress == 'up') {
-        player.y -= player.speed - 20;
+        this.y -= this.speed - 20;
     }
     if (keyPress == 'right') {
-        player.x += player.speed;
+        this.x += this.speed;
     }
     if (keyPress == 'down') {
-        player.y += player.speed - 20;
+        this.y += this.speed - 20;
     }
 };
 
 Player.prototype.reset = function() {
         this.x = 202;
         this.y = 415;
+        if (this.lives === 1) {
+            this. points = 0;
+            this. lives = 5;
+        }else {
+        this.lives = this.lives - 1;
+    }
 };
 
 /**--------------------DISPLAYING COLLECTIBLE ITEMS---------------------------**/
@@ -97,7 +104,7 @@ var Items = function() {
 
     this.points = Math.floor(Math.random() *5);
     this.sprite = img[this.points];
-    this.multiplier = 10 * (this.points + 1);
+    this.multiplier = 2 * (this.points + 1);
 
     this.x = 0 + (101 * Math.floor(Math.random() * 5));
     this.y = 63 + (83 * Math.floor(Math.random() * 3));
