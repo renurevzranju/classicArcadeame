@@ -1,15 +1,15 @@
 'use strict';
-/**---------------------------SOUND EFFECTS--------------------------------**/
+/**---------------------------SOUND--------------------------------**/
 var bug = new Audio('sounds/bug.wav');
 var collect = new Audio('sounds/collect.mp3');
 /**---------------------------ENEMY VARIABLE--------------------------------**/
-var Enemy = function(x, y, speed) {
+var Enemy = function(xPos, yPos, speed) {
     /** Variables applied to each of our instances go here,
     *we've provided one for you to get started
     *The image/sprite for our enemies, this uses
     *a helper we've provided to easily load images**/
-    this.x = x;
-    this.y = y;
+    this.xStart = xPos;
+    this.yStart = yPos;
     this.speed = speed;
     this.sprite = 'images/enemy-bug.png';
 };
@@ -19,11 +19,11 @@ var Enemy = function(x, y, speed) {
 Enemy.prototype.update = function(dt) {
     /**You should multiply any movement by the dt parameter
     which will ensure the game runs at the same speed for all computers.**/
-    if (this.x >= 505){
-       this.x = -(Math.floor((Math.random() * 5) + 1) * 101);
-        this.y = Math.floor((Math.random() * 3) + 1) * 83;
+    if (this.xStart >= 505){
+       this.xStart = -(Math.floor((Math.random() * 5) + 1) * 101);
+        this.yStart = Math.floor((Math.random() * 3) + 1) * 83;
     } else {
-        this.x = this.x + (this.speed * dt);
+        this.xStart = this.xStart + (this.speed * dt);
     }
     /**Collision Check**/
     collisionDetection(this);
@@ -31,7 +31,7 @@ Enemy.prototype.update = function(dt) {
 
 /**Draw the enemy on the screen, required method for game**/
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.xStart, this.yStart);
 };
 
 /**----------------------------------PLAYER VARIABLE-----------------------------**/
@@ -41,19 +41,19 @@ var Player = function(x, y, speed) {
     this.speed = speed;
     this.sprite = 'images/char-horn-girl.png';
     this.points = 0;
-    this.lives = 5;
+    this.lives = 5;   
 };
 
 Player.prototype.update = function() {
     /**check if player runs into left, bottom, or right canvas walls
     prevent player from moving beyond canvas wall boundaries**/
-    if (player.y > 383 ) {
+    if (this.y > 383 ) {
         this.y = 383;
     }
-    if (player.x > 402.5) {
+    if (this.x > 402.5) {
         this.x = 402.5;
     }
-    if (player.x < 2.5) {
+    if (this.x < 2.5) {
         this.x = 2.5;
     }
 };
@@ -88,7 +88,7 @@ Player.prototype.reset = function() {
         this.x = 202;
         this.y = 415;
         if (this.lives === 1) {
-            alert(" !!!!!!!!!!!!!!!GAME OVER!!!!!!!!!!!!!!! \n Points Earned : " + player.points);
+            alert("!!!!!!!!!!!!!!GAME OVER!!!!!!!!!!! \n ********You Score: " + this.points);
             this. points = 0;
             this. lives = 5;
         }else {
@@ -110,8 +110,8 @@ var Items = function() {
     this.sprite = img[this.points];
     this.multiplier = 2 * (this.points + 1);
 
-    this.x = 0 + (101 * Math.floor(Math.random() * 5));
-    this.y = 63 + (83 * Math.floor(Math.random() * 3));
+    this.xPosition = 0 + (101 * Math.floor(Math.random() * 5));
+    this.yPosition = 63 + (83 * Math.floor(Math.random() * 3));
 };
 
 Items.prototype.update = function() {
@@ -119,26 +119,27 @@ Items.prototype.update = function() {
 };
 
 Items.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.xPosition, this.yPosition);
 };
 
 /**----------------------COLLISION DETECTION---------------**/
 var collisionDetection = function(anEnemy) {
     /** check for collision between enemy and player **/
-    if (player.y + 131 >= anEnemy.y + 90
-        && player.x + 25 <= anEnemy.x + 88
-        && player.y + 73 <= anEnemy.y + 135
-        && player.x + 76 >= anEnemy.x + 11) {
+    if (player.y + 131 >= anEnemy.yStart + 90
+        && player.x + 25 <= anEnemy.xStart + 88
+        && player.y + 73 <= anEnemy.yStart + 135
+        && player.x + 76 >= anEnemy.xStart + 11) {
         bug.play();
+        console.log('Collided');
         player.reset();
     }
 };
 
 var ItemCollision = function() {
-    if (player.y + 131 >= items.y + 90
-        && player.x + 25 <= items.x + 88
-        && player.y + 73 <= items.y + 135
-        && player.x + 76 >= items.x + 11) {
+    if (player.y + 131 >= items.yPosition + 90
+        && player.x + 25 <= items.xPosition + 88
+        && player.y + 73 <= items.yPosition + 135
+        && player.x + 76 >= items.xPosition + 11) {
         collect.play();
         player.points += items.multiplier;
         items = null;
@@ -146,6 +147,7 @@ var ItemCollision = function() {
     }
 };
 
+/**---------------------------------------------------------------------------**/
 var items = new Items();
 var player = new Player(202.5, 383, 80);
 var firstbug = new Enemy(0, Math.random() * 184 + 50, Math.floor((Math.random() * 100) + 500));
@@ -162,6 +164,5 @@ document.addEventListener('keyup', function(e) {
         39: 'right', 
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
