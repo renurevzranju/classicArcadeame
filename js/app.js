@@ -1,4 +1,7 @@
 'use strict';
+/**---------------------------SOUND EFFECTS--------------------------------**/
+var bug = new Audio('sounds/bug.wav');
+var collect = new Audio('sounds/collect.mp3');
 /**---------------------------ENEMY VARIABLE--------------------------------**/
 var Enemy = function(x, y, speed) {
     /** Variables applied to each of our instances go here,
@@ -126,16 +129,8 @@ var collisionDetection = function(anEnemy) {
         && player.x + 25 <= anEnemy.x + 88
         && player.y + 73 <= anEnemy.y + 135
         && player.x + 76 >= anEnemy.x + 11) {
-        console.log('Collided');
+        bug.play();
         player.reset();
-    }
-    /**check for player reaching top of canvas and winning the game**/
-    if (player.y + 63 <= 0) {        
-        player.x = 202.5;
-        player.y = 383;
-        console.log('You made it!');
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, 505, 171);
     }
 };
 
@@ -144,6 +139,7 @@ var ItemCollision = function() {
         && player.x + 25 <= items.x + 88
         && player.y + 73 <= items.y + 135
         && player.x + 76 >= items.x + 11) {
+        collect.play();
         player.points += items.multiplier;
         items = null;
         items = new Items();
@@ -157,7 +153,6 @@ var secondbug = new Enemy(0, Math.random() * 184 + 50, Math.floor((Math.random()
 var thirdbug = new Enemy(0, Math.random() * 184 + 50, Math.floor((Math.random() * 100) + 600));
 var fourthbug = new Enemy(0, Math.random() * 184 + 50, Math.floor((Math.random() * 200) + 100));
 var allEnemies = [firstbug, secondbug, thirdbug, fourthbug];
-allEnemies.push();
 /**This listens for key presses and sends the keys to your
     Player.handleInput() method. You don't need to modify this.**/
 document.addEventListener('keyup', function(e) {
@@ -170,5 +165,3 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-
